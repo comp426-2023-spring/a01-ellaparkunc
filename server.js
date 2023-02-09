@@ -1,20 +1,32 @@
+//#!/usr/bin/env node
 // Require http module
 const http = require('node:http');
 
 const hostname = '127.0.0.1';
 const port = 3000;
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World\n');
-});
-
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
 // Require fs module
+const fs = require('fs');
 
+fs.readFile('./public/index.html', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    //console.log(data);
+
+    const server = http.createServer((req, res) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'text/plain');
+        res.end(data);
+      });
+      
+      server.listen(port, hostname, () => {
+        console.log(`Server running at http://${hostname}:${port}/`);
+      });
+  });
+
+  
 // Require minimist module (make sure you install this one via npm).
 
 // Use minimist to process one argument `--port=` on the command line after `node server.js`.
